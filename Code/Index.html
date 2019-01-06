@@ -1,0 +1,153 @@
+<!-- client side -->
+
+<!doctype html>
+<html>
+
+<!-- HTML HEAD -->
+<head>
+
+	<style>
+		body {background-color: #a39274;}
+		h1 {font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+			color: #dfd8c8;
+			text-align:center;
+		}
+		div {font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+			color: #dfd8c8;
+			text-align:center;
+		}
+		.button {
+			background-color: #252523 ;
+		    border: none;
+		    color: #dfd8c8;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 12px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		    margin-left: 45%;
+		    margin-right: 45%;
+		    width: 10%;
+		    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+		    border-radius: 25px;
+		}
+
+		.cam {
+			width: 40%;
+			border-radius: 25px;
+		}
+
+		form {
+		    border-radius: 5px;
+		    background-color: #f2f2f2;
+
+		    background-position: center;
+    		background-repeat: no-repeat;
+    		background-size: contain;
+    		background-color: transparent;
+
+    		width: 80px;
+		    height: 80px;
+		    border: none;
+		    position: absolute;
+		    top: 40vh;
+		    left: calc(10% - 0vh); 
+    		
+		}
+
+		input[type=submit], select {
+		    background-color: #252523 ;
+		    border: none;
+		    color: #dfd8c8;
+		    padding: 15px 32px;
+		    text-align: left;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 12px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+		    border-radius: 25px;
+		}
+
+		input[type=text] {
+		    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+			color: #dfd8c8;
+		}
+
+	</style>
+
+	<title>Smart Appliance</title>
+
+	<!-- Source for Socket.io - this one is local -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+</head>
+
+<body>
+	<!-- HTML layout -->
+  <h1>Smart Appliance</h1> <br>
+
+  	<img class="cam" style="-webkit-user-select: none; display: block; margin: 0 auto;" src="http://ec444group15.ddns.net:8081/" alt="Webcam not Connected" align="middle">
+
+  	<br>
+
+  	<button class="button" onclick="getTemp()">Turn Device On</button>
+
+  	<br>
+
+  	<div id="message_disp"></div>
+
+  	<p id="demo"></p>
+
+	<script>
+			function getTemp(event) {
+			  	//document.getElementById("demo").innerHTML = "Hello World";
+			  	//var io1 = require('http').Server(app);
+			  	//let x = "Test Console on button";
+			  	//console.log(x);
+			  	//var x = "tester";
+			  	var socket = io();
+				socket.emit('now', "tester");
+			}
+	</script>
+
+	
+	<!-- Script to handle socket and so to update chart datapoints -->
+	<script>
+		var socket = io();
+		socket.on('message', function(msg){
+			console.log(msg);
+			document.getElementById("message_disp").innerHTML = "Current Temperature: " + msg;
+			// Update data array
+		});
+	</script>
+
+	<script>
+		$(document).ready(function(){
+			$('#form').submit(function(){
+			    socket.emit('later', $('#Hour').val() + $('#Min').val());
+			    return false;
+		  });
+		});
+	</script>
+
+	<form id = "form" action = "">
+  		Hour:<br>
+  		<input type="text" id="Hour"><br>
+  		Min:<br>
+  		<input type="text" id="Min"><br>
+  		<input type="submit" value="Set Time">
+	</form>
+
+
+	
+
+		
+
+</body>
+
+</html>
